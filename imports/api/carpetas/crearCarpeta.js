@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 const ruta = 'C:/Users/juann/Documents/trabajoSistemasOperativos';
 /**
  * @typedef Entrada
- * @property {String} nombreArchivo
+ * @property {String} nombreCarpeta
  * @property {String} carpetaDestino
  */
 
@@ -13,19 +13,19 @@ const ruta = 'C:/Users/juann/Documents/trabajoSistemasOperativos';
  * función para crear un archivo
  * @param {Entrada} entrada
  */
-const crearArchivo = ({ nombreArchivo, carpetaDestino = '/' }) => {
-  const principalFolder = `${ruta}/tmp${carpetaDestino}${nombreArchivo}`;
+const crearCarpeta = ({ nombreCarpeta, carpetaDestino = '/' }) => {
+  const principalFolder = `${ruta}/tmp${carpetaDestino}${nombreCarpeta}`;
   try {
-    fs.writeFileSync(principalFolder);
+    fs.mkdirSync(principalFolder);
 
     return true;
   } catch (error) {
     console.error(error);
-    const mensajeError = error.errno === -4068
+    const mensajeError = error.errno === -4075
       ? 'Ya existe un archivo o carpeta con este nombre, por favor verificar'
       : 'Error creando la carpeta';
     throw new Meteor.Error('error_creando_archivo', mensajeError);
   }
 };
 
-export default crearArchivo;
+export default crearCarpeta;
