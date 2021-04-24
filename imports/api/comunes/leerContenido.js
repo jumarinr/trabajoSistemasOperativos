@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import fs from 'fs';
 
-const ruta = 'C:/Users/juann/Documents/trabajoSistemasOperativos';
+import ruta from '../../commons/ruta';
 
 /**
  *
