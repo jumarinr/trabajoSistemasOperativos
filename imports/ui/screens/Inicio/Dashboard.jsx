@@ -22,13 +22,14 @@ import { obtenerContenido, crearArchivo, crearCarpeta } from './helperDashboard'
 // components
 import Archivo from './Archivo.jsx';
 import Carpeta from './Carpeta.jsx';
+import Enrutamiento from './Enrutamiento.jsx';
 
 const Dashboard = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [resultados, setResultados] = useState([]);
-  const [rutaActual] = useState('/');
+  const [rutaActual, setRutaActual] = useState('/');
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -38,9 +39,9 @@ const Dashboard = () => {
     setAnchorEl(null);
   };
 
-  const initialLoad = async() => {
+  const initialLoad = async(ruta) => {
     try {
-      const resultadoMetodo = await obtenerContenido(rutaActual);
+      const resultadoMetodo = await obtenerContenido(ruta);
 
       setResultados(resultadoMetodo);
     } catch (error) {
@@ -128,9 +129,21 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    initialLoad();
-    return () => null;
-  }, []);
+    if (rutaActual) {
+      initialLoad(rutaActual);
+    }
+  }, [rutaActual]);
+
+  const cambiarRuta = (nuevaRuta) => {
+    const ruta = `${rutaActual}${nuevaRuta}/`;
+    setRutaActual(ruta);
+  };
+
+  const arrayBreadCrump = rutaActual.split('/');
+
+  // eliminamos la última posicion que no retorna nada
+  arrayBreadCrump.pop();
+
   return (
     <>
       <div>
@@ -179,11 +192,14 @@ const Dashboard = () => {
 
       <Grid container spacing={2}>
 
-        {console.log(resultados)}
+        <Grid item xs={12}>
+          <Enrutamiento arrayBreadCrump={arrayBreadCrump} setRutaActual={setRutaActual} />
+        </Grid>
+
         {resultados.map((resultado) => (
-          <Grid item xs={4} md={1}>
+          <Grid item xs={6} md={2}>
             {resultado.isDirectory
-              ? <Carpeta {...resultado} />
+              ? <Carpeta {...resultado} cambiarRuta={cambiarRuta} />
               : <Archivo {...resultado} />}
           </Grid>
         ))}

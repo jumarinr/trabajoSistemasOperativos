@@ -12,7 +12,7 @@ const themeLight = createMuiTheme({
       main: '#f83245',
     },
     backgroundColor: {
-      main: '#ABD8CD',
+      main: '#BDBDBD',
     },
     backgroundButonsColor: {
       main: '#ffffff',
