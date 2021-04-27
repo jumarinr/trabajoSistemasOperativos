@@ -1,7 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 // material ui core
@@ -11,10 +12,17 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // material ui icons
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
-import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
+import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+
+// font awesome icons
+import { faHandScissors, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,14 +35,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Carpeta = ({
-  // isDirectory,
+  isDirectory,
   nombre,
   fechaCreacion,
   // fechaActualizacion,
   cambiarRuta,
+  borrarContenidoPorNombre,
+  editarNombreContenido,
+  copiarContenido,
 }) => {
   const classes = useStyles();
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <>
       <List>
@@ -47,15 +63,90 @@ const Carpeta = ({
             secondary={DateTime
               .fromJSDate(fechaCreacion)
               .setLocale('co')
-              .toFormat('ff a')}
+              .toFormat('ff')}
           />
           <ListItemSecondaryAction>
-            <IconButton edge="end" aria-label="delete">
-              <DeleteIcon />
+            <IconButton
+              edge="end"
+              aria-label="delete"
+              aria-controls={nombre}
+              aria-haspopup="true"
+              onClick={(event) => setAnchorEl(event.currentTarget)}
+            >
+              <MoreVertIcon />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
       </List>
+
+      <Menu
+        id={nombre}
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        keepMounted
+        onClose={handleClose}
+      >
+        <MenuItem
+          onClick={() => {
+            handleClose();
+
+            editarNombreContenido({
+              viejaRuta: nombre,
+              isDirectory,
+            });
+          }}
+        >
+          <ListItemIcon>
+            <EditTwoToneIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Editar nombre" />
+
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => {
+            handleClose();
+
+            copiarContenido({
+              nombreContenido: nombre,
+              isDirectory,
+            });
+          }}
+        >
+          <ListItemIcon>
+            <FontAwesomeIcon icon={faCopy} />
+          </ListItemIcon>
+          <ListItemText primary="Copiar Carpeta" />
+
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => {
+            handleClose();
+          }}
+        >
+          <ListItemIcon>
+            <FontAwesomeIcon icon={faHandScissors} />
+          </ListItemIcon>
+          <ListItemText primary="Cortar Carpeta" />
+
+        </MenuItem>
+
+        <MenuItem onClick={() => {
+          handleClose();
+
+          borrarContenidoPorNombre({
+            rutaABorrar: nombre,
+            isDirectory,
+          });
+        }}
+        >
+          <ListItemIcon>
+            <DeleteTwoToneIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Borrar Carpeta" />
+        </MenuItem>
+      </Menu>
     </>
   );
 };
@@ -66,6 +157,9 @@ Carpeta.propTypes = {
   fechaCreacion: PropTypes.instanceOf(Date).isRequired,
   fechaActualizacion: PropTypes.instanceOf(Date).isRequired,
   cambiarRuta: PropTypes.func.isRequired,
+  borrarContenidoPorNombre: PropTypes.func.isRequired,
+  editarNombreContenido: PropTypes.func.isRequired,
+  copiarContenido: PropTypes.func.isRequired,
 };
 
 export default Carpeta;

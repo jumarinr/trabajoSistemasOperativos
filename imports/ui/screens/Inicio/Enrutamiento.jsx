@@ -30,6 +30,7 @@ const Enrutamiento = ({ arrayBreadCrump = [], setRutaActual }) => {
                 color="textPrimary"
                 onClick={() => redirigir(key + 1)}
                 key={Random.id()}
+                style={{ cursor: 'pointer' }}
               >
                 {ruta}
               </Typography>
@@ -38,6 +39,7 @@ const Enrutamiento = ({ arrayBreadCrump = [], setRutaActual }) => {
               <HomeIcon
                 onClick={() => redirigir(key + 1)}
                 key={Random.id()}
+                style={{ cursor: 'pointer' }}
               />
             );
           return contenido;

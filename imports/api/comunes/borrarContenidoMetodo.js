@@ -1,20 +1,21 @@
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
 import SimpleSchema from 'simpl-schema';
-import borrarCarpeta from './borrarCarpeta';
 
-const borrarCarpetaMetodo = new ValidatedMethod({
-  name: 'borrarCarpeta',
+import borrarContenido from './borrarContenido';
+
+const borrarContenidoMetodo = new ValidatedMethod({
+  name: 'borrarContenido',
   validate: new SimpleSchema({
     rutaABorrar: { type: String },
   }).validator(),
   run({ rutaABorrar }) {
     this.unblock();
 
-    const rutaBorrada = borrarCarpeta(rutaABorrar);
+    const rutaBorrada = borrarContenido(rutaABorrar);
 
     return rutaBorrada;
   },
 });
 
-export default borrarCarpetaMetodo;
+export default borrarContenidoMetodo;
