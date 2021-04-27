@@ -43,6 +43,7 @@ const Carpeta = ({
   borrarContenidoPorNombre,
   editarNombreContenido,
   copiarContenido,
+  cortarContenido,
 }) => {
   const classes = useStyles();
 
@@ -123,6 +124,11 @@ const Carpeta = ({
         <MenuItem
           onClick={() => {
             handleClose();
+
+            cortarContenido({
+              nombreContenido: nombre,
+              isDirectory,
+            });
           }}
         >
           <ListItemIcon>
@@ -160,6 +166,7 @@ Carpeta.propTypes = {
   borrarContenidoPorNombre: PropTypes.func.isRequired,
   editarNombreContenido: PropTypes.func.isRequired,
   copiarContenido: PropTypes.func.isRequired,
+  cortarContenido: PropTypes.func.isRequired,
 };
 
 export default Carpeta;

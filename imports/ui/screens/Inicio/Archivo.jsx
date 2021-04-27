@@ -42,6 +42,7 @@ const Archivo = ({
   borrarContenidoPorNombre,
   editarNombreContenido,
   copiarContenido,
+  cortarContenido,
 }) => {
   const classes = useStyles();
 
@@ -123,6 +124,11 @@ const Archivo = ({
         <MenuItem
           onClick={() => {
             handleClose();
+
+            cortarContenido({
+              nombreContenido: nombre,
+              isDirectory,
+            });
           }}
         >
           <ListItemIcon>
@@ -159,6 +165,7 @@ Archivo.propTypes = {
   borrarContenidoPorNombre: PropTypes.func.isRequired,
   editarNombreContenido: PropTypes.func.isRequired,
   copiarContenido: PropTypes.func.isRequired,
+  cortarContenido: PropTypes.func.isRequired,
 };
 
 export default Archivo;

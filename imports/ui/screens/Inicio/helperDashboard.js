@@ -106,3 +106,19 @@ export const pegarContenido = (entrada) => new Promise((resolve, reject) => {
     }
   });
 });
+
+/**
+ * función para pegar un archivo o carpeta
+ * @param {EntradaEditar} entrada
+ * @returns {Promise<Boolean>}
+*/
+export const pegarContenidoCortado = (entrada) => new Promise((resolve, reject) => {
+  Meteor.call('pegarContenidoCortado', entrada, (err, result) => {
+    if (err) {
+      console.error(err);
+      reject(err);
+    } else {
+      resolve(result);
+    }
+  });
+});

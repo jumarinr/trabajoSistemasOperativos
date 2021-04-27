@@ -27,7 +27,9 @@ import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import { faPaste, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import {
-  obtenerContenido, crearArchivo, crearCarpeta, borrarContenido, editarContenido, pegarContenido,
+  obtenerContenido, crearArchivo,
+  crearCarpeta, borrarContenido, editarContenido, pegarContenido,
+  pegarContenidoCortado,
 } from './helperDashboard';
 
 // components
@@ -38,7 +40,8 @@ import Enrutamiento from './Enrutamiento.jsx';
 const Dashboard = () => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const [portaPapeles, setPortaPapeles] = useState(localStorage.getItem('viejaRuta'));
+  const objetoRuta = localStorage.getItem('viejaRuta');
+  const [portaPapeles, setPortaPapeles] = useState(objetoRuta ? JSON.parse(objetoRuta) : null);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [resultados, setResultados] = useState([]);
@@ -239,7 +242,13 @@ const Dashboard = () => {
 
   const copiarContenido = ({ nombreContenido, isDirectory }) => {
     const viejaRuta = `${rutaActual}${nombreContenido}`;
-    localStorage.setItem('viejaRuta', viejaRuta);
+
+    const localStorageInfo = {
+      isCopiar: true,
+      viejaRuta,
+    };
+
+    localStorage.setItem('viejaRuta', JSON.stringify(localStorageInfo));
 
     setPortaPapeles(localStorage.getItem('viejaRuta'));
 
@@ -248,8 +257,27 @@ const Dashboard = () => {
     });
   };
 
+  const cortarContenido = ({ nombreContenido, isDirectory }) => {
+    const viejaRuta = `${rutaActual}${nombreContenido}`;
+
+    const localStorageInfo = {
+      isCopiar: false,
+      viejaRuta,
+    };
+
+    localStorage.setItem('viejaRuta', JSON.stringify(localStorageInfo));
+
+    setPortaPapeles(localStorage.getItem('viejaRuta'));
+
+    enqueueSnackbar(`${isDirectory ? 'Carpeta cortada' : 'Archivo cortado'} con éxito!`, {
+      variant: 'success',
+    });
+  };
+
   const pegarContenidoPortaPapeles = async() => {
-    const contenidoActual = localStorage.getItem('viejaRuta');
+    const localData = localStorage.getItem('viejaRuta');
+
+    const contenidoActual = localData ? JSON.parse(localData) : null;
 
     if (!contenidoActual) {
       enqueueSnackbar('No se encontró contenido a pegar', {
@@ -261,10 +289,17 @@ const Dashboard = () => {
       return;
     }
 
+    const {
+      isCopiar,
+      viejaRuta,
+    } = contenidoActual;
+
     try {
-      await pegarContenido({
+      const funcionAEjecutar = isCopiar ? pegarContenido : pegarContenidoCortado;
+
+      await funcionAEjecutar({
         nuevaRuta: rutaActual,
-        viejaRuta: contenidoActual,
+        viejaRuta,
       });
 
       enqueueSnackbar('Pegado con exito!', {
@@ -338,6 +373,7 @@ const Dashboard = () => {
                   borrarContenidoPorNombre={borrarContenidoPorNombre}
                   editarNombreContenido={editarNombreContenido}
                   copiarContenido={copiarContenido}
+                  cortarContenido={cortarContenido}
                 />
               )
               : (
@@ -346,6 +382,7 @@ const Dashboard = () => {
                   borrarContenidoPorNombre={borrarContenidoPorNombre}
                   editarNombreContenido={editarNombreContenido}
                   copiarContenido={copiarContenido}
+                  cortarContenido={cortarContenido}
                 />
               )}
           </Grid>
