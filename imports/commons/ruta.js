@@ -1,3 +1,3 @@
-const ruta = 'C:/Users/juann/Documents/trabajoSistemasOperativos';
+const ruta = process.env.PWD;
 
 export default ruta;

@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-console */
 import { useSnackbar } from 'notistack';
+import { Random } from 'meteor/random';
 
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
@@ -60,7 +61,7 @@ const Dashboard = () => {
         variant: 'success',
       });
 
-      initialLoad();
+      initialLoad(rutaActual);
     } catch (error) {
       console.error(error);
       const mensajeError = error.reason || error.message;
@@ -99,7 +100,7 @@ const Dashboard = () => {
         variant: 'success',
       });
 
-      initialLoad();
+      initialLoad(rutaActual);
     } catch (error) {
       console.error(error);
 
@@ -197,7 +198,12 @@ const Dashboard = () => {
         </Grid>
 
         {resultados.map((resultado) => (
-          <Grid item xs={6} md={2}>
+          <Grid
+            item
+            xs={6}
+            md={2}
+            key={Random.id()}
+          >
             {resultado.isDirectory
               ? <Carpeta {...resultado} cambiarRuta={cambiarRuta} />
               : <Archivo {...resultado} />}

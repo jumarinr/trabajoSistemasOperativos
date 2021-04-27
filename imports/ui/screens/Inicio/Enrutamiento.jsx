@@ -1,3 +1,5 @@
+import { Random } from 'meteor/random';
+
 import _ from 'lodash';
 
 import React from 'react';
@@ -16,7 +18,6 @@ const Enrutamiento = ({ arrayBreadCrump = [], setRutaActual }) => {
 
     const ruta = _.take(copiaRuta, rutaPosition).join('/');
 
-    console.log(`${ruta}/`);
     setRutaActual(`${ruta}/`);
   };
   return (
@@ -28,12 +29,17 @@ const Enrutamiento = ({ arrayBreadCrump = [], setRutaActual }) => {
               <Typography
                 color="textPrimary"
                 onClick={() => redirigir(key + 1)}
-                key={key + 1}
+                key={Random.id()}
               >
                 {ruta}
               </Typography>
             )
-            : <HomeIcon onClick={() => redirigir(key + 1)} />;
+            : (
+              <HomeIcon
+                onClick={() => redirigir(key + 1)}
+                key={Random.id()}
+              />
+            );
           return contenido;
         })}
       </Breadcrumbs>

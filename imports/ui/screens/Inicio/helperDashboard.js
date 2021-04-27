@@ -54,3 +54,19 @@ export const crearCarpeta = (entrada) => new Promise((resolve, reject) => {
     }
   });
 });
+
+/**
+ * función para borrar la carpeta
+ * @param {String} rutaABorrar
+ * @returns {Promise<Boolea>}
+ */
+export const borrarCarpeta = (rutaABorrar) => new Promise((resolve, reject) => {
+  Meteor.call('borrarCarpeta', { rutaABorrar }, (err, result) => {
+    if (err) {
+      console.error(err);
+      reject(err);
+    } else {
+      resolve(result);
+    }
+  });
+});
