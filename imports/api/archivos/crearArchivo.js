@@ -17,7 +17,7 @@ import ruta from '../../commons/ruta';
 const crearArchivo = ({ nombreArchivo, carpetaDestino = '/' }) => {
   const principalFolder = `${ruta}/tmp${carpetaDestino}${nombreArchivo}`;
   try {
-    fs.writeFileSync(principalFolder);
+    fs.writeFileSync(principalFolder, '');
 
     return true;
   } catch (error) {

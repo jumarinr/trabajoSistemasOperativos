@@ -24,7 +24,7 @@ import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 
 // font awesome icons
-import { faPaste, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPaste, faPlus, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
 import {
   obtenerContenido, crearArchivo,
@@ -36,16 +36,17 @@ import {
 import Archivo from './Archivo.jsx';
 import Carpeta from './Carpeta.jsx';
 import Enrutamiento from './Enrutamiento.jsx';
+import PaginaSuspendida from '../PaginaSuspendida/PaginaSuspendida.jsx';
 
 const Dashboard = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const objetoRuta = localStorage.getItem('viejaRuta');
   const [portaPapeles, setPortaPapeles] = useState(objetoRuta ? JSON.parse(objetoRuta) : null);
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [resultados, setResultados] = useState([]);
   const [rutaActual, setRutaActual] = useState('/');
+  const [cargandoPagina, setCargandoPagina] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -56,6 +57,7 @@ const Dashboard = () => {
   };
 
   const initialLoad = async(ruta) => {
+    setCargandoPagina(true);
     try {
       const resultadoMetodo = await obtenerContenido(ruta);
 
@@ -63,6 +65,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error(error);
     }
+    setCargandoPagina(false);
   };
 
   const crearNuevoArchivo = async(fileName) => {
@@ -302,6 +305,11 @@ const Dashboard = () => {
         viejaRuta,
       });
 
+      if (!isCopiar) {
+        localStorage.removeItem('viejaRuta');
+        setPortaPapeles(null);
+      }
+
       enqueueSnackbar('Pegado con exito!', {
         variant: 'success',
       });
@@ -318,108 +326,136 @@ const Dashboard = () => {
     initialLoad(rutaActual);
   };
 
+  const cancelarCopiar = () => {
+    localStorage.removeItem('viejaRuta');
+    setPortaPapeles(null);
+
+    enqueueSnackbar('Removido del portapapeles', {
+      variant: 'success',
+    });
+  };
+
   return (
     <>
-      <div>
-        <Button
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          variant="contained"
-          color="primary"
-          onClick={handleClick}
-          startIcon={<FontAwesomeIcon icon={faPlus} />}
-        >
-          Nuevo
-        </Button>
-        &nbsp;
+      {cargandoPagina
+        ? <PaginaSuspendida />
+        : (
+          <>
+            <div>
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                variant="contained"
+                color="primary"
+                onClick={handleClick}
+                startIcon={<FontAwesomeIcon icon={faPlus} />}
+              >
+                Nuevo
+              </Button>
+              &nbsp;
 
-        {portaPapeles
-          ? (
-            <Button
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              variant="contained"
-              color="primary"
-              onClick={pegarContenidoPortaPapeles}
-              startIcon={<FontAwesomeIcon icon={faPaste} />}
+              {portaPapeles
+                ? (
+                  <>
+                    <Button
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      variant="contained"
+                      color="secondary"
+                      onClick={cancelarCopiar}
+                      startIcon={<FontAwesomeIcon icon={faWindowClose} />}
+                    >
+                      Cancelar Copiar
+                    </Button>
+                      &nbsp;
+                    <Button
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      variant="contained"
+                      color="primary"
+                      onClick={pegarContenidoPortaPapeles}
+                      startIcon={<FontAwesomeIcon icon={faPaste} />}
+                    >
+                      Pegar
+                    </Button>
+                  </>
+                )
+                : null}
+
+            </div>
+
+            <br />
+
+            <Grid container spacing={2}>
+
+              <Grid item xs={12}>
+                <Enrutamiento arrayBreadCrump={arrayBreadCrump} setRutaActual={setRutaActual} />
+              </Grid>
+
+              {resultados.map((resultado) => (
+                <Grid
+                  item
+                  xs={6}
+                  md={2}
+                  key={Random.id()}
+                >
+                  {resultado.isDirectory
+                    ? (
+                      <Carpeta
+                        {...resultado}
+                        cambiarRuta={cambiarRuta}
+                        borrarContenidoPorNombre={borrarContenidoPorNombre}
+                        editarNombreContenido={editarNombreContenido}
+                        copiarContenido={copiarContenido}
+                        cortarContenido={cortarContenido}
+                      />
+                    )
+                    : (
+                      <Archivo
+                        {...resultado}
+                        borrarContenidoPorNombre={borrarContenidoPorNombre}
+                        editarNombreContenido={editarNombreContenido}
+                        copiarContenido={copiarContenido}
+                        cortarContenido={cortarContenido}
+                      />
+                    )}
+                </Grid>
+              ))}
+
+            </Grid>
+
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
             >
-              Pegar
-            </Button>
-          )
-          : null}
+              <MenuItem onClick={() => {
+                handleClose();
+                alCrearCarpeta();
+              }}
+              >
+                <ListItemIcon>
+                  <CreateNewFolderIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Crear Carpeta" />
 
-      </div>
+              </MenuItem>
 
-      <br />
-
-      <Grid container spacing={2}>
-
-        <Grid item xs={12}>
-          <Enrutamiento arrayBreadCrump={arrayBreadCrump} setRutaActual={setRutaActual} />
-        </Grid>
-
-        {resultados.map((resultado) => (
-          <Grid
-            item
-            xs={6}
-            md={2}
-            key={Random.id()}
-          >
-            {resultado.isDirectory
-              ? (
-                <Carpeta
-                  {...resultado}
-                  cambiarRuta={cambiarRuta}
-                  borrarContenidoPorNombre={borrarContenidoPorNombre}
-                  editarNombreContenido={editarNombreContenido}
-                  copiarContenido={copiarContenido}
-                  cortarContenido={cortarContenido}
-                />
-              )
-              : (
-                <Archivo
-                  {...resultado}
-                  borrarContenidoPorNombre={borrarContenidoPorNombre}
-                  editarNombreContenido={editarNombreContenido}
-                  copiarContenido={copiarContenido}
-                  cortarContenido={cortarContenido}
-                />
-              )}
-          </Grid>
-        ))}
-
-      </Grid>
-
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={() => {
-          handleClose();
-          alCrearCarpeta();
-        }}
-        >
-          <ListItemIcon>
-            <CreateNewFolderIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Crear Carpeta" />
-
-        </MenuItem>
-
-        <MenuItem onClick={() => {
-          handleClose();
-          alCrearArchivo();
-        }}
-        >
-          <ListItemIcon>
-            <InsertDriveFileIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Crear Archivo" />
-        </MenuItem>
-      </Menu>
+              <MenuItem onClick={() => {
+                handleClose();
+                alCrearArchivo();
+              }}
+              >
+                <ListItemIcon>
+                  <InsertDriveFileIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Crear Archivo" />
+              </MenuItem>
+            </Menu>
+          </>
+        )}
     </>
   );
 };

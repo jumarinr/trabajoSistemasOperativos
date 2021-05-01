@@ -22,7 +22,9 @@ import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 
 // font awesome icons
-import { faHandScissors, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faHandScissors, faCopy, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+
+import Propiedades from './Propiedades.jsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,10 +37,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Carpeta = ({
+  // file
   isDirectory,
   nombre,
   fechaCreacion,
-  // fechaActualizacion,
+  fechaActualizacion,
+
+  // funciones
   cambiarRuta,
   borrarContenidoPorNombre,
   editarNombreContenido,
@@ -47,8 +52,23 @@ const Carpeta = ({
 }) => {
   const classes = useStyles();
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const infoNodoActual = {
+    isDirectory,
+    nombre,
+    fechaCreacion,
+    fechaActualizacion,
+  };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [modalPropiedades, setModalPropiedades] = useState(false);
+
+  const handleClickPropiedades = () => {
+    setModalPropiedades(true);
+  };
+
+  const handleClosePropiedades = () => {
+    setModalPropiedades(false);
+  };
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -152,7 +172,26 @@ const Carpeta = ({
           </ListItemIcon>
           <ListItemText primary="Borrar Carpeta" />
         </MenuItem>
+
+        <MenuItem onClick={() => {
+          handleClose();
+
+          handleClickPropiedades();
+        }}
+        >
+          <ListItemIcon>
+            <FontAwesomeIcon icon={faInfoCircle} />
+          </ListItemIcon>
+          <ListItemText primary="Propiedades" />
+        </MenuItem>
+
       </Menu>
+
+      <Propiedades
+        open={modalPropiedades}
+        handleClose={handleClosePropiedades}
+        infoNodoActual={infoNodoActual}
+      />
     </>
   );
 };
