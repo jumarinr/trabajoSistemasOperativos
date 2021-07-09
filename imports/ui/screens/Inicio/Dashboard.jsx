@@ -408,6 +408,7 @@ const Dashboard = () => {
                         editarNombreContenido={editarNombreContenido}
                         copiarContenido={copiarContenido}
                         cortarContenido={cortarContenido}
+                        rutaActual={rutaActual}
                       />
                     )
                     : (

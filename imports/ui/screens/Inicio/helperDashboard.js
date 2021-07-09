@@ -122,3 +122,25 @@ export const pegarContenidoCortado = (entrada) => new Promise((resolve, reject) 
     }
   });
 });
+
+export const listadoUsuarios = () => new Promise((resolve, reject) => {
+  Meteor.call('listadoUsuarios', (err, result) => {
+    if (err) {
+      console.error(err);
+      reject(err);
+    } else {
+      resolve(result);
+    }
+  });
+});
+
+export const cambiarPropietario = (entrada) => new Promise((resolve, reject) => {
+  Meteor.call('cambiarPropietario', entrada, (err, result) => {
+    if (err) {
+      console.error(err);
+      reject(err);
+    } else {
+      resolve(result);
+    }
+  });
+});

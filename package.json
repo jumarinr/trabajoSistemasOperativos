@@ -30,7 +30,7 @@
     "react-meteor-hooks": "^0.3.1",
     "react-responsive": "8.2.0",
     "react-router-dom": "5.2.0",
-    "react-select": "4.3.0",
+    "react-select": "^4.3.0",
     "react-spinners": "0.10.6",
     "simpl-schema": "1.10.2",
     "sweetalert2": "^10.16.6",

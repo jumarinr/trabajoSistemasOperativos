@@ -42,6 +42,8 @@ const Carpeta = ({
   nombre,
   fechaCreacion,
   fechaActualizacion,
+  idUsuario,
+  rutaActual,
 
   // funciones
   cambiarRuta,
@@ -57,6 +59,8 @@ const Carpeta = ({
     nombre,
     fechaCreacion,
     fechaActualizacion,
+    idUsuario,
+    rutaActual,
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -199,6 +203,7 @@ const Carpeta = ({
 Carpeta.propTypes = {
   isDirectory: PropTypes.bool.isRequired,
   nombre: PropTypes.string.isRequired,
+  idUsuario: PropTypes.number.isRequired,
   fechaCreacion: PropTypes.instanceOf(Date).isRequired,
   fechaActualizacion: PropTypes.instanceOf(Date).isRequired,
   cambiarRuta: PropTypes.func.isRequired,
