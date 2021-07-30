@@ -14,6 +14,8 @@ const leerContenido = async(carpetaALeer = '/') => {
   try {
     const principalFolder = `${ruta}/tmp${carpetaALeer}`;
 
+    console.log(principalFolder);
+
     const datos = fs.readdirSync(principalFolder);
 
     const datosConvertidos = datos.map((archivoOCarpeta) => {
