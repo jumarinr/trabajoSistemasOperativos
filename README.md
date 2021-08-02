@@ -4,11 +4,14 @@ Trabajo 1 de sistemas operativos.
 El presente trabajo contiene un explorador de archivos que permite crear, eliminar, renombrar, copiar, pegar, ver información de permisos, mover, cambiar de propietario, cambiar permisos, todo esto para carpetas y archivos.
 
 # REQUISITOS:
+### TECNICOS:
   > ### nodejs
   > ### npm
   > ### meteor
+### HABILITAR FUNCIONES DE SUPER USUARIO:
+  > ### En el archivo ```ìmports/commons/contrasena.js``` escribes tu contraseña para habilitar la función de cambiar de propietario.
 
-# INSTALANDOLOS:
+# INSTALANDO LOS REQUISITOS:
 ## nodejs y npm:
   > ```cd ~```
   
@@ -28,3 +31,8 @@ El presente trabajo contiene un explorador de archivos que permite crear, elimin
 
 ### Verificar la instalación:
 > ```meteor --version```
+
+# CORRER EL PROYECTO:
+
+> ```npm install```
+> ```npm start```
