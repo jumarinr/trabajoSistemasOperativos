@@ -1,7 +1,8 @@
+import { useSnackbar } from 'notistack';
+
 import _ from 'lodash';
 
 import React, { useState, useEffect, useContext } from 'react';
-// import PropTypes from 'prop-types';
 import ReactSelect from 'react-select';
 
 // material ui core
@@ -12,6 +13,8 @@ import { listadoUsuarios, cambiarPropietario } from './helperDashboard';
 import PropertiesFileOrDirectory from '../../contexts/PropertiesFileOrDirectory.jsx';
 
 const Propietario = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const { idUsuario, nombre, rutaActual } = useContext(PropertiesFileOrDirectory);
 
   const [listaUsuarios, setListaUsuarios] = useState([]);
@@ -28,11 +31,17 @@ const Propietario = () => {
       gid: newPropietario.idGroup,
     })
       .then(() => {
-        console.log(setPropietario);
-
         setPropietario(newPropietario);
+
+        enqueueSnackbar('Propietario cambiado con éxito', {
+          variant: 'success',
+        });
       })
-      .catch(console.error);
+      .catch((error) => {
+        enqueueSnackbar(error.reason, {
+          variant: 'error',
+        });
+      });
   };
 
   useEffect(() => {

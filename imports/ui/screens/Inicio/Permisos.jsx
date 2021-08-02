@@ -1,7 +1,8 @@
+import { useSnackbar } from 'notistack';
+
 import _ from 'lodash';
 
 import React, { useContext, useState, useEffect } from 'react';
-// import PropTypes from 'prop-types';
 import ReactSelect from 'react-select';
 
 // material ui core
@@ -19,6 +20,8 @@ const PERMISOS = [
 ];
 
 const Permisos = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const properties = useContext(PropertiesFileOrDirectory);
   const { rutaActual, nombre } = properties;
 
@@ -26,6 +29,17 @@ const Permisos = () => {
 
   const handleResponse = (value) => () => {
     setPermiso(value);
+
+    enqueueSnackbar('Permiso cambiado con éxito', {
+      variant: 'success',
+    });
+  };
+
+  const handleError = (error) => {
+    console.error(error);
+    enqueueSnackbar(error.reason, {
+      variant: 'error',
+    });
   };
 
   const handleChangePermiso = (value) => {
@@ -37,7 +51,7 @@ const Permisos = () => {
       rutaArchivo: `${rutaActual}${nombre}`,
     })
       .then(llamadoResponse)
-      .catch(console.error);
+      .catch(handleError);
   };
 
   const permisoRaw = _.get(properties, 'permiso', null);

@@ -8,19 +8,17 @@ const cambiarPropietarioMetodo = new ValidatedMethod({
   name: 'cambiarPropietario',
   validate: new SimpleSchema({
     path: { type: String },
-    gid: { type: Number },
     uid: { type: Number },
+    gid: { type: Number },
   }).validator(),
   run({ path, gid, uid }) {
     this.unblock();
 
-    const rutaBorrada = cambiarPropietario({
-      gid,
+    return cambiarPropietario({
       path,
       uid,
+      gid,
     });
-
-    return rutaBorrada;
   },
 });
 
