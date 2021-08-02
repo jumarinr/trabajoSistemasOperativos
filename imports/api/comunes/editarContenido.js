@@ -26,7 +26,10 @@ const editarContenido = ({ nuevaRuta, viejaRuta }) => {
   } catch (error) {
     console.error(error);
 
-    throw new Meteor.Error('error_editando_carpeta', 'Error editando el contenido');
+    throw new Meteor.Error(
+      'error_editando_carpeta',
+      `Error editando el contenido ${error.message}`,
+    );
   }
 };
 

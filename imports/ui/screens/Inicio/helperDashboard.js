@@ -144,3 +144,21 @@ export const cambiarPropietario = (entrada) => new Promise((resolve, reject) => 
     }
   });
 });
+
+/**
+ * función para cambiar los permisos a las rutas o archivos
+ * @param {Object} entrada
+ * @param {String} entrada.rutaArchivo
+ * @param {Number} entrada.permisoCode
+ * @returns {Promise<Boolean>}
+ */
+export const cambiarPermiso = (entrada) => new Promise((resolve, reject) => {
+  Meteor.call('cambiarPermiso', entrada, (err, result) => {
+    if (err) {
+      console.error(err);
+      reject(err);
+    } else {
+      resolve(result);
+    }
+  });
+});

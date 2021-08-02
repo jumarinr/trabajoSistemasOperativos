@@ -155,7 +155,14 @@ const Dashboard = () => {
 
   const cambiarRuta = (nuevaRuta) => {
     const ruta = `${rutaActual}${nuevaRuta}/`;
-    setRutaActual(ruta);
+
+    obtenerContenido(ruta)
+      .then(() => setRutaActual(ruta))
+      .catch((error) => {
+        enqueueSnackbar(error.reason, {
+          variant: 'error',
+        });
+      });
   };
 
   const arrayBreadCrump = rutaActual.split('/');
@@ -418,6 +425,7 @@ const Dashboard = () => {
                         editarNombreContenido={editarNombreContenido}
                         copiarContenido={copiarContenido}
                         cortarContenido={cortarContenido}
+                        rutaActual={rutaActual}
                       />
                     )}
                 </Grid>

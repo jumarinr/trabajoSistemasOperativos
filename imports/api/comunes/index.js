@@ -3,6 +3,7 @@ import borrarContenidoMetodo from './borrarContenidoMetodo';
 import editarContenidoMetodo from './editarContenidoMetodo';
 import pegarContenidoMetodo from './pegarContenidoMetodo';
 import pegarContenidoCortadoMetodo from './pegarContenidoCortadoMetodo';
+import cambiarPermisoMetodo from './cambiarPermisoMetodo';
 
 export default {
   leerContenidoMetodo,
@@ -10,4 +11,5 @@ export default {
   editarContenidoMetodo,
   pegarContenidoMetodo,
   pegarContenidoCortadoMetodo,
+  cambiarPermisoMetodo,
 };

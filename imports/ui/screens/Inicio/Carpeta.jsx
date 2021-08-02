@@ -1,6 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// font awesome icons
+import { faHandScissors, faCopy, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -20,9 +22,6 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
-
-// font awesome icons
-import { faHandScissors, faCopy, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Propiedades from './Propiedades.jsx';
 
@@ -44,6 +43,7 @@ const Carpeta = ({
   fechaActualizacion,
   idUsuario,
   rutaActual,
+  permiso,
 
   // funciones
   cambiarRuta,
@@ -61,6 +61,7 @@ const Carpeta = ({
     fechaActualizacion,
     idUsuario,
     rutaActual,
+    permiso,
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -211,6 +212,8 @@ Carpeta.propTypes = {
   editarNombreContenido: PropTypes.func.isRequired,
   copiarContenido: PropTypes.func.isRequired,
   cortarContenido: PropTypes.func.isRequired,
+  permiso: PropTypes.number.isRequired,
+  rutaActual: PropTypes.string.isRequired,
 };
 
 export default Carpeta;

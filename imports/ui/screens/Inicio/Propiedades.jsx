@@ -1,127 +1,127 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { DateTime } from 'luxon';
+import { makeStyles } from '@material-ui/core/styles';
 
-import _ from 'lodash';
-
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import ReactSelect from 'react-select';
 
 // material ui icons
+import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
-import Divider from '@material-ui/core/Divider';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
-import { listadoUsuarios, cambiarPropietario } from './helperDashboard';
+import PropertiesFileOrDirectory from '../../contexts/PropertiesFileOrDirectory.jsx';
+import Basic from './Basic.jsx';
+import Permisos from './Permisos.jsx';
+import Propietario from './Propietario.jsx';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const useStyles = makeStyles((theme) => ({
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+  tab: {
+    textTransform: 'none',
+    fontWeight: theme.typography.fontWeightRegular,
+    fontSize: theme.typography.pxToRem(15),
+  },
+  hidden: {
+    display: 'none',
+  },
+
+  default: {
+    display: '',
+  },
+}));
+
+const TAB_PERMISOS = 1;
+const TAB_BASIC = 0;
+const TAB_PROPIETARIO = 2;
+
 const Propiedades = ({ open, handleClose, infoNodoActual }) => {
-  const [listaUsuarios, setListaUsuarios] = useState([]);
-  const [propietario, setPropietario] = useState(null);
+  const classes = useStyles();
+  const [tabValue, setTabValue] = useState(0);
 
-  const {
-    fechaActualizacion, fechaCreacion, idUsuario, rutaActual, nombre,
-  } = infoNodoActual;
+  const { nombre } = infoNodoActual;
 
-  const cargarListadoUsuarios = () => listadoUsuarios()
-    .then(setListaUsuarios)
-    .catch(console.error);
-
-  const handleChangeSelect = (newPropietario) => {
-    cambiarPropietario({
-      path: `${rutaActual}${nombre}`,
-      uid: newPropietario.idUser,
-      gid: newPropietario.idGroup,
-    })
-      .then(() => {
-        console.log(setPropietario);
-
-        setPropietario(newPropietario);
-      })
-      .catch(console.error);
+  const handleChange = (event, newValue) => {
+    setTabValue(newValue);
   };
 
-  useEffect(() => {
-    cargarListadoUsuarios();
-
-    return () => null;
-  }, []);
-
-  useEffect(() => {
-    if (idUsuario && !_.isEmpty(listaUsuarios)) {
-      const currentPropietario = _.find(listaUsuarios, { idUser: idUsuario });
-
-      setPropietario({
-        ...currentPropietario,
-        label: currentPropietario.userName,
-        value: idUsuario,
-      });
-    }
-  }, [idUsuario, listaUsuarios]);
-
   return (
-
     <>
       <Dialog
         open={open}
         TransitionComponent={Transition}
         keepMounted
         fullWidth
-        maxWidth="xs"
+        maxWidth="sm"
         onClose={handleClose}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="confirmation-dialog-title">Propiedades y Permisos</DialogTitle>
+        <DialogTitle id="confirmation-dialog-title">
+          Propiedades:
+          <b>{` ${nombre}`}</b>
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent dividers>
-          <DialogContentText id="alert-dialog-slide-description">
-            <b>Propiedades</b>
-            <Divider />
-          </DialogContentText>
+          <PropertiesFileOrDirectory.Provider value={infoNodoActual}>
+            <Tabs
+              value={tabValue}
+              indicatorColor="primary"
+              textColor="primary"
+              onChange={handleChange}
+              centered
+            >
+              <Tab label="Info. Basica" className={classes.tab} />
+              <Tab label="Permisos" className={classes.tab} />
+              <Tab label="Propietario" className={classes.tab} />
+            </Tabs>
 
-          <DialogContentText id="alert-dialog-slide-description">
-            <b>Fecha creación: </b>
-            {' '}
-            {DateTime
-              .fromJSDate(fechaCreacion)
-              .setLocale('co')
-              .toFormat('ff')}
-          </DialogContentText>
-          <DialogContentText id="alert-dialog-slide-description">
-            <b>Última modificación: </b>
-            {' '}
-            {DateTime
-              .fromJSDate(fechaActualizacion)
-              .setLocale('co')
-              .toFormat('ff')}
-          </DialogContentText>
+            <br />
 
-          <DialogContentText id="alert-dialog-slide-description">
-            <b>Propietario</b>
-            <Divider />
-          </DialogContentText>
+            <div
+              className={tabValue === TAB_BASIC
+                ? classes.default
+                : classes.hidden}
+            >
+              <Basic />
+            </div>
 
-          <DialogContentText id="alert-dialog-slide-description">
-            <b>Nombre </b>
+            <div
+              className={tabValue === TAB_PERMISOS
+                ? classes.default
+                : classes.hidden}
+            >
+              <Permisos />
+            </div>
 
-            <ReactSelect
-              options={listaUsuarios}
-              value={propietario}
-              menuPosition="fixed"
-              fullWidth
-              maxMenuHeight={150}
-              noOptionsMessage={() => 'No se encontraron usuarios'}
-              onChange={handleChangeSelect}
-            />
+            <div
+              className={tabValue === TAB_PROPIETARIO
+                ? classes.default
+                : classes.hidden}
+            >
+              <Propietario />
+            </div>
 
-          </DialogContentText>
-
+          </PropertiesFileOrDirectory.Provider>
         </DialogContent>
       </Dialog>
     </>

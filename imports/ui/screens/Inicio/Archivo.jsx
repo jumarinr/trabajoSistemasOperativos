@@ -1,6 +1,8 @@
+/* eslint-disable react/no-unused-prop-types */
 import { makeStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandScissors, faCopy, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -22,7 +24,8 @@ import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 // font awesome icons
-import { faHandScissors, faCopy } from '@fortawesome/free-solid-svg-icons';
+
+import Propiedades from './Propiedades.jsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,19 +37,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Archivo = ({
-  isDirectory,
-  nombre,
-  fechaCreacion,
-  fechaActualizacion,
-  borrarContenidoPorNombre,
-  editarNombreContenido,
-  copiarContenido,
-  cortarContenido,
-}) => {
+const Archivo = (props) => {
+  const {
+    isDirectory,
+    nombre,
+    fechaCreacion,
+    borrarContenidoPorNombre,
+    editarNombreContenido,
+    copiarContenido,
+    cortarContenido,
+  } = props;
+
+  const infoNodoActual = { ...props };
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [modalPropiedades, setModalPropiedades] = useState(false);
+
+  const handleClickPropiedades = () => setModalPropiedades(!modalPropiedades);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -152,7 +160,25 @@ const Archivo = ({
           </ListItemIcon>
           <ListItemText primary="Borrar Archivo" />
         </MenuItem>
+
+        <MenuItem onClick={() => {
+          handleClose();
+
+          handleClickPropiedades();
+        }}
+        >
+          <ListItemIcon>
+            <FontAwesomeIcon icon={faInfoCircle} />
+          </ListItemIcon>
+          <ListItemText primary="Propiedades" />
+        </MenuItem>
       </Menu>
+
+      <Propiedades
+        open={modalPropiedades}
+        handleClose={handleClickPropiedades}
+        infoNodoActual={infoNodoActual}
+      />
     </>
   );
 };
@@ -166,6 +192,7 @@ Archivo.propTypes = {
   editarNombreContenido: PropTypes.func.isRequired,
   copiarContenido: PropTypes.func.isRequired,
   cortarContenido: PropTypes.func.isRequired,
+  rutaActual: PropTypes.string.isRequired,
 };
 
 export default Archivo;

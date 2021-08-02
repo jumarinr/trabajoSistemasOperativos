@@ -14,7 +14,10 @@ const borrarContenido = (rutaABorrar) => {
   } catch (error) {
     console.error(error);
 
-    throw new Meteor.Error('error_borrando_carpeta', 'Error eliminando el contenido');
+    throw new Meteor.Error(
+      'error_borrando_carpeta',
+      `Error eliminando el contenido: ${error.message}`,
+    );
   }
 };
 

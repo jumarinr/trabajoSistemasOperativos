@@ -21,7 +21,7 @@ const pegarContenidoCortado = ({ nuevaRuta, viejaRuta }) => {
 
     const message = error.message === 'Source and destination must not be the same.'
       ? 'No se puede copiar un archivo en el mismo destino'
-      : 'Error copiando el contenido';
+      : `Error cortando el contenido: ${error.message}`;
 
     throw new Meteor.Error('error_editando_carpeta', message);
   }

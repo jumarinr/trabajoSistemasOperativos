@@ -24,7 +24,7 @@ const crearArchivo = ({ nombreArchivo, carpetaDestino = '/' }) => {
     console.error(error);
     const mensajeError = error.errno === -4068
       ? 'Ya existe un archivo o carpeta con este nombre, por favor verificar'
-      : 'Error creando la carpeta';
+      : `Error creando la carpeta: ${error.message}`;
     throw new Meteor.Error('error_creando_archivo', mensajeError);
   }
 };
