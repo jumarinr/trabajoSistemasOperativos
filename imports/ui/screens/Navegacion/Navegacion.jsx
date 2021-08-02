@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 const Navegacion = ({ children }) => (
   <>
-    Header
-    <br />
     {children}
   </>
 );
