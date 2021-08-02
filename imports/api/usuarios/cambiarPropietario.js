@@ -1,7 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-
-// import fs from 'fs';
-
 import { execSync } from 'child_process';
 
 import ruta from '../../commons/ruta';

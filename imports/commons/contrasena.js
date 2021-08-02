@@ -1,3 +1,3 @@
-const contrasena = '1007223499';
+const contrasena = '';
 
 export default contrasena;
