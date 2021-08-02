@@ -12,11 +12,12 @@ import Typography from '@material-ui/core/Typography';
 import paginaSuspendidaStyles from './paginaSuspendidaStyles.jsx';
 
 const PaginaSuspendida = ({ classes }) => (
-  <Container component="main" maxWidth="xs">
+  <Container component="main" maxWidth="md">
     <div className={classes.paper}>
-      <Typography component="h1" variant="h6">
-        <PropagateLoader color="#f1ce61" />
+      <Typography variant="h6" style={{ textAlign: 'center' }}>
+        Cargando...
       </Typography>
+      <PropagateLoader color="#f1ce61" />
     </div>
 
   </Container>
