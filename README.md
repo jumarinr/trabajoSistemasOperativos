@@ -9,9 +9,10 @@ El presente trabajo contiene un explorador de archivos que permite crear, elimin
   > ### npm
   > ### meteor
 ### HABILITAR FUNCIONES DE SUPER USUARIO:
-  > ### En el archivo ```ìmports/commons/contrasena.js``` escribes tu contraseña para habilitar la función de cambiar de propietario.
+  > ### En el archivo ```imports/commons/contrasena.js``` escribes tu contraseña para habilitar la función de cambiar de propietario.
 
 # INSTALANDO LOS REQUISITOS:
+### Los siguientes comando se escriben dentro de la terminal de ubuntu.
 ## nodejs y npm:
   > ```cd ~```
   
@@ -21,7 +22,8 @@ El presente trabajo contiene un explorador de archivos que permite crear, elimin
 
   > ```sudo apt install nodejs```
 
-### Verificar la instalación:
+## Verificar la instalación:
+### Al correr cada comando aparece la versión instalada
   > ```node -v```
 
   > ```npm -v```
@@ -29,10 +31,16 @@ El presente trabajo contiene un explorador de archivos que permite crear, elimin
 ## meteor
   > ```curl https://install.meteor.com/ | sh```
 
-### Verificar la instalación:
+## Verificar la instalación:
+ ### Al correr cada comando aparece la versión instalada
 > ```meteor --version```
 
 # CORRER EL PROYECTO:
 
+> ### Te paras sobre la carpeta del proyecto
+
 > ```npm install```
+
 > ```npm start```
+
+> ### Luego de esto se abre en el navegador el siguiente link http://localhost:3000
