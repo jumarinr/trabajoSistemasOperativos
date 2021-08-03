@@ -31,3 +31,12 @@ El presente trabajo contiene un explorador de archivos que permite crear, elimin
 > ```meteor npm start```
 
 > ### Luego de esto se abre en el navegador el siguiente link http://localhost:3000
+
+# TRABAJO REALIZADO POR:
+> ## Juan Diego Marin Rodriguez
+
+> ## Juan Alberto Toro Mejia
+
+> ## Danny Estrada Alvarez
+
+> ## Cristian Giraldo Villegas
