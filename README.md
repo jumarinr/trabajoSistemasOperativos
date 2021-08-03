@@ -37,7 +37,7 @@ El presente trabajo contiene un explorador de archivos que permite crear, elimin
 
 # CORRER EL PROYECTO:
 
-> ### Te paras sobre la carpeta del proyecto
+### Te paras sobre la carpeta del proyecto en la terminal y escribes los siguientes comandos
 
 > ```npm install```
 
