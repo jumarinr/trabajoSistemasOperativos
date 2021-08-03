@@ -3,6 +3,8 @@ Trabajo 1 de sistemas operativos.
 
 El presente trabajo contiene un explorador de archivos que permite crear, eliminar, renombrar, copiar, pegar, ver información de permisos, mover, cambiar de propietario, cambiar permisos, todo esto para carpetas y archivos.
 
+Nuestra carpeta ```home```, donde se van a almacenar todas las carpetas y archivos se llama ```/tmp```
+
 # REQUISITOS:
 ### TECNICOS:
   > ### meteor
