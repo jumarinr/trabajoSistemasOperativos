@@ -5,30 +5,17 @@ El presente trabajo contiene un explorador de archivos que permite crear, elimin
 
 # REQUISITOS:
 ### TECNICOS:
-  > ### nodejs
-  > ### npm
   > ### meteor
 ### HABILITAR FUNCIONES DE SUPER USUARIO:
   > ### En el archivo ```imports/commons/contrasena.js``` escribes tu contraseña para habilitar la función de cambiar de propietario.
 
 # INSTALANDO LOS REQUISITOS:
 ### Los siguientes comando se escriben dentro de la terminal de ubuntu.
-## nodejs y npm:
-  > ```cd ~```
-  
-  > ```curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh```
-
-  > ```sudo bash nodesource_setup.sh```
-
-  > ```sudo apt install nodejs```
-
-## Verificar la instalación:
-### Al correr cada comando aparece la versión instalada
-  > ```node -v```
-
-  > ```npm -v```
-
 ## meteor
+  > ```cd ~```
+
+  > ```sudo apt install curl```
+  
   > ```curl https://install.meteor.com/ | sh```
 
 ## Verificar la instalación:
@@ -39,8 +26,8 @@ El presente trabajo contiene un explorador de archivos que permite crear, elimin
 
 ### Te paras sobre la carpeta del proyecto en la terminal y escribes los siguientes comandos
 
-> ```npm install```
+> ```meteor npm install```
 
-> ```npm start```
+> ```meteor npm start```
 
 > ### Luego de esto se abre en el navegador el siguiente link http://localhost:3000
